@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAI Social Media</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+
+        header {
+            background-color: #4267B2;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo {
+            font-size: 24px;
+            margin-right: auto;
+        }
+
+        header input {
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            gap: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .feed, .profile, .messages {
+            display: none;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .active {
+            display: block;
+        }
+
+        .post, .message {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 60px;
+        }
+
+        .post-display, .message-display {
+            margin-top: 10px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #4267B2;
+            color: white;
+        }
+
+        .profile-edit {
+            display: inline-block;
+            margin-left: 10px;
+            cursor: pointer;
+            color: #4267B2;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">ZAI</div>
+        <input type="text" id="searchInput" placeholder="Search for people...">
+        <button id="searchButton">Search</button>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="showSection('feed')">Home</a></li>
+                <li><a href="#" onclick="showSection('profile')">Profile</a></li>
+                <li><a href="#" onclick="showSection('messages')">Messages</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div id="feed" class="feed active">
+            <h2>News Feed</h2>
+            <div class="post">
+                <textarea id="postContent" placeholder="What's on your mind?"></textarea>
+                <button id="postButton">Post</button>
+            </div>
+            <div id="postDisplay" class="post-display"></div>
+        </div>
+
+        <div id="profile" class="profile">
+            <h2>User Profile</h2>
+            <div>
+                <strong>Name:</strong> 
+                <span id="profileName">John Doe</span>
+                <span class="profile-edit" onclick="editProfile('name')">Edit</span>
+            </div>
+            <div>
+                <strong>Email:</strong> 
+                <span id="profileEmail">john.doe@example.com</span>
+                <span class="profile-edit" onclick="editProfile('email')">Edit</span>
+            </div>
+            <div>
+                <strong>Bio:</strong> 
+                <span id="profileBio">Just a regular user of ZAI!</span>
+                <span class="profile-edit" onclick="editProfile('bio')">Edit</span>
+            </div>
+        </div>
+
+        <div id="messages" class="messages">
+            <h2>Messages</h2>
+            <div class="message">
+                <input type="text" id="messageInput" placeholder="Type a message...">
+                <button id="sendMessageButton">Send</button>
+            </div>
+            <div id="messageDisplay" class="message-display"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 ZAI Social Media</p>
+    </footer>
+
+    <script>
+        document.getElementById('postButton').addEventListener('click', function() {
+            const content = document.getElementById('postContent').value;
+            if (content) {
+                const postDisplay = document.getElementById('postDisplay');
+                const newPost = document.createElement('p');
+                newPost.innerHTML = `<strong>You:</strong> ${content}`;
+                postDisplay.appendChild(newPost);
+                document.getElementById('postContent').value = ''; // Clear the textarea
+            } else {
+                alert('Please write something to post!');
+            }
+        });
+
+        document.getElementById('sendMessageButton').addEventListener('click', function() {
+            const message = document.getElementById('messageInput').value;
+            if (message) {
+                const messageDisplay = document.getElementById('messageDisplay');
+                const newMessage = document.createElement('p');
+                newMessage.innerHTML = `<strong>You:</strong> ${message}`;
+                messageDisplay.appendChild(newMessage);
+                document.getElementById('messageInput').value = ''; // Clear the input
+            } else {
+                alert('Please enter a message!');
+            }
+        });
+
+        function showSection(section) {
+            document.querySelectorAll('.feed, .profile, .messages').forEach(function(div) {
+                div.classList.remove('active');
+            });
+            document.getElementById(section).classList.add('active');
+        }
+
+        function editProfile(field) {
+            const name = document.getElementById('profileName');
+            const email = document.getElementById('profileEmail');
+            const bio = document.getElementById('profileBio');
+
+            let currentValue = field === 'name' ? name.innerText : field === 'email' ? email.innerText : bio.innerText;
+            let newValue = prompt(`Edit your ${field}:`, currentValue);
+            if (newValue) {
+                if (field === 'name') name.innerText = newValue;
+                else if (field === 'email') email.innerText = newValue;
+                else if (field === 'bio') bio.innerText = newValue;
+            }
+        }
+
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const searchTerm = document.getElementById('searchInput').value;
+            if (searchTerm) {
+                alert(`Searching for: ${searchTerm}`);
+                // Implement actual search functionality here
+            } else {
+                alert('Please enter a name to search for!');
+            }
+        });
+
+        function logout() {
+            alert('Logged out successfully!');
+            // Implement actual logout functionality here
+        }
+    </script>
+</body>
+</html>
